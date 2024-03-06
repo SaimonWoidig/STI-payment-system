@@ -26,6 +26,15 @@ dependencies {
     compileOnly("org.projectlombok:lombok")
     annotationProcessor("org.projectlombok:lombok")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
+    implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.16.1")
+}
+
+tasks.bootJar {
+    manifest {
+        attributes(
+            "Implementation-Version" to project.version
+        )
+    }
 }
 
 tasks.withType<Test> {
