@@ -17,7 +17,7 @@ public class PaymentServiceImpl implements PaymentService {
     private final CashPaymentService cashPaymentService;
 
     @Override
-    public void makePayment(@Valid @NotNull MakePaymentDTO dto) {
+    public void makePayment(@Valid @NotNull MakePaymentDTO dto) throws IllegalArgumentException {
         switch (dto.paymentType()) {
             case CARD -> cardPaymentService.pay(dto.price(), dto.currency());
             case CASH -> cashPaymentService.cash(dto.price(), dto.currency(), dto.dateTime());
