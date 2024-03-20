@@ -27,7 +27,10 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("org.springframework.boot:spring-boot-starter-validation")
     compileOnly("org.projectlombok:lombok")
+    testCompileOnly("org.projectlombok:lombok")
     annotationProcessor("org.projectlombok:lombok")
+    testImplementation("org.junit.jupiter:junit-jupiter")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-json-org")
     implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-xml")
@@ -39,15 +42,20 @@ dependencies {
 tasks.bootJar {
     manifest {
         attributes(
-            "Implementation-Version" to project.version
+                "Implementation-Version" to project.version
         )
     }
 }
 
 tasks.withType<Test> {
     useJUnitPlatform()
-    finalizedBy(tasks.withType<JacocoReport>())
 }
-tasks.withType<JacocoReport> {
-    dependsOn(tasks.withType<Test>())
+tasks.test {
+    finalizedBy(tasks.jacocoTestReport)
+}
+tasks.jacocoTestReport {
+    dependsOn(tasks.test)
+    reports {
+        xml.required = true
+    }
 }
