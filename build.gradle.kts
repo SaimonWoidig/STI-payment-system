@@ -2,6 +2,7 @@ plugins {
     java
     id("org.springframework.boot") version "3.2.3"
     id("io.spring.dependency-management") version "1.1.4"
+    id("jacoco")
 }
 
 group = "cz.woidig.sti"
@@ -31,16 +32,22 @@ dependencies {
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-json-org")
     implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-xml")
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
+    implementation("org.apache.commons:commons-lang3:3.14.0")
+
 }
 
 tasks.bootJar {
     manifest {
         attributes(
-                "Implementation-Version" to project.version
+            "Implementation-Version" to project.version
         )
     }
 }
 
 tasks.withType<Test> {
     useJUnitPlatform()
+    finalizedBy(tasks.withType<JacocoReport>())
+}
+tasks.withType<JacocoReport> {
+    dependsOn(tasks.withType<Test>())
 }
