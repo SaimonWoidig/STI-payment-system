@@ -1,0 +1,19 @@
+comment:
+  layout: "condensed_header, condensed_files, condensed_footer"
+  behavior: default
+  require_changes: true
+  hide_project_coverage: true
+github_checks:
+  annotations: true
+coverage:
+  status:
+    project:
+      default:
+        target: auto
+        threshold: 80%
+        base: auto
+    patch:
+      default:
+        target: auto
+        threshold: 80%
+        base: auto
