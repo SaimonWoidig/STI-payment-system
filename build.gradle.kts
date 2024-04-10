@@ -51,6 +51,9 @@ tasks.withType<Test> {
     useJUnitPlatform()
 }
 tasks.test {
+    // disable warning message caused by MockitoExtension
+    // see https://github.com/mockito/mockito/issues/3037
+    jvmArgs("-XX:+EnableDynamicAgentLoading")
     finalizedBy(tasks.jacocoTestReport)
 }
 tasks.jacocoTestReport {

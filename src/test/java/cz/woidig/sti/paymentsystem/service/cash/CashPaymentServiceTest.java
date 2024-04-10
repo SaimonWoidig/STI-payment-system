@@ -1,9 +1,11 @@
 package cz.woidig.sti.paymentsystem.service.cash;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
 import java.time.LocalDateTime;
 
@@ -44,5 +46,15 @@ class CashPaymentServiceTest {
     @Test
     void cashInvalid() {
         Assertions.assertThrows(IllegalArgumentException.class, () -> this.cashPaymentService.cash(null, null, null));
+    }
+
+    @Test
+    void jsonException() throws JsonProcessingException {
+        XmlMapper throwingXmlMapper = Mockito.mock(XmlMapper.class);
+        Mockito.doThrow(JsonProcessingException.class).when(throwingXmlMapper).writeValueAsString(Mockito.any());
+        this.cashPaymentService = new CashPaymentService(throwingXmlMapper);
+
+        CashTransaction t = new CashTransaction(1.0f, "CZK", LocalDateTime.now());
+        Assertions.assertNull(this.cashPaymentService.toXMLData(t));
     }
 }

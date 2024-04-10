@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 @AllArgsConstructor
 @Log
 public class PaymentController {
-    private final PaymentService paymentService;
+    private PaymentService paymentService;
 
     @PostMapping(path = "/payment", consumes = MediaType.APPLICATION_JSON_VALUE)
     public void makePayment(@Valid @RequestBody MakePaymentDTO makePaymentDTO) throws IllegalArgumentException {
